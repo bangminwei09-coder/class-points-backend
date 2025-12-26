@@ -32,6 +32,6 @@ const ruleSchema = new mongoose.Schema({
     timestamps: true
 });
 
-groupSchema.index({ userId: 1 });
+ruleSchema.index({ userId: 1 });
 
 module.exports = mongoose.model('Rule', ruleSchema);
