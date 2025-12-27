@@ -7,6 +7,9 @@ require('dotenv').config();
 
 const app = express();
 
+// 导出app供云函数使用
+module.exports = app;
+
 // ==================== 中间件配置 ====================
 
 // 安全头部
@@ -122,12 +125,15 @@ app.use((err, req, res, next) => {
 
 // ==================== 启动服务器 ====================
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🚀 服务器运行在端口 ${PORT}`);
-    console.log(`📝 环境: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🌐 前端地址: ${process.env.FRONTEND_URL || '未配置'}`);
-});
+// 只在非云函数环境下启动服务器
+if (require.main === module) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`🚀 服务器运行在端口 ${PORT}`);
+        console.log(`📝 环境: ${process.env.NODE_ENV || 'development'}`);
+        console.log(`🌐 前端地址: ${process.env.FRONTEND_URL || '未配置'}`);
+    });
+}
 
 // 优雅关闭
 process.on('SIGTERM', () => {
