@@ -7,10 +7,13 @@ const { authenticate } = require('../middleware/auth');
 
 // 生成 JWT Token
 const generateToken = (userId) => {
+    const secret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
+    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+    
     return jwt.sign(
         { userId },
-        process.env.JWT_SECRET,
-        { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+        secret,
+        { expiresIn }
     );
 };
 
