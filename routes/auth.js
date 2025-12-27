@@ -8,15 +8,10 @@ const { authenticate } = require('../middleware/auth');
 // 生成 JWT Token
 const generateToken = (userId) => {
     const secret = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-    const expiresIn = process.env.JWT_EXPIRES_IN || '7d';
+    // 强制使用 7d，忽略环境变量（因为Railway环境变量有问题）
+    const expiresIn = '7d';
     
-    console.log('生成Token - JWT_EXPIRES_IN:', expiresIn);
-    
-    // 确保 expiresIn 是有效的格式
-    if (!expiresIn || typeof expiresIn !== 'string') {
-        console.error('JWT_EXPIRES_IN 格式错误:', expiresIn);
-        return jwt.sign({ userId }, secret, { expiresIn: '7d' });
-    }
+    console.log('生成Token - 使用固定值 expiresIn:', expiresIn);
     
     return jwt.sign(
         { userId },
